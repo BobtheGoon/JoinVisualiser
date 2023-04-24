@@ -1,5 +1,5 @@
-const renderChordEntJoint = () => {
+const renderChordEndJoint = () => {
     console.log('chord')
 }
 
-export default renderChordEntJoint
+export default renderChordEndJoint

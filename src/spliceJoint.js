@@ -1,5 +1,5 @@
 const renderSpliceJoint = () => {
-    console.log('home')
+    console.log('splice joint')
 }
 
 export default renderSpliceJoint

@@ -1,5 +1,5 @@
 const renderWindframeJoint = () => {
-    console.log('menu')
+    console.log('windframe')
 }
 
 export default renderWindframeJoint
