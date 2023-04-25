@@ -6,9 +6,10 @@ const clearContent = () => {
 const FormFactory = () => {
   const form = document.createElement('form')
 
+  const getForm = () => form
+
   const createInputs = (...args) => {
     //Take in arguments for joint parameters and make them into input fields with the parameter as the inputs id
-    console.log(args)
 
     const inputs = args.map(input => {
       const element = document.createElement('input')
@@ -22,9 +23,10 @@ const FormFactory = () => {
   }
 
   const createFormLabels = (labels) => {
+    console.log('inprog')
   }
   
-  return form
+  return {getForm, createInputs}
 }
 
 export {FormFactory, clearContent}
