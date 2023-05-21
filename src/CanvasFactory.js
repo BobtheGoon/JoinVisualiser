@@ -1,32 +1,28 @@
 const CanvasFactory = () => {
+  //Size of drawing canvas
   const canvasHeight = 400
-  const canvasWidth = 800
+  const canvasWidth = 400
 
-  const canvas = document.createElement('div')
+  //Create an svg canvas
+  const svgns = 'http://www.w3.org/2000/svg'
+  const canvas = document.createElementNS(svgns, 'svg')
   canvas.id = 'canvas'
-  canvas.style.width = canvasWidth.toString() + 'px'
-  canvas.style.height = canvasHeight.toString() + 'px'
-  canvas.style.backgroundColor = 'beige'
+  canvas.setAttribute('width', canvasWidth)
+  canvas.setAttribute('height', canvasHeight)
+  canvas.setAttribute('viewBox', '0 0 400 400')
 
   const getCanvas = () => canvas
 
+  //Draw profile to canvas
   const drawProfile = (width, height, thickness) => {
-    const normalisedWidth = width / canvasWidth * 100
-    const normalisedHeight = height / canvasHeight * 100
+    const profile = document.createElementNS(svgns, 'rect')
+    profile.setAttribute("x", "150");
+    profile.setAttribute("y", "150");
+    profile.setAttribute("width", "100");
+    profile.setAttribute("height", "100");
+    profile.setAttribute("fill", "#5cceee");
 
-    const profile = document.createElement('div')
-    profile.style.width = normalisedWidth.toString() + 'px'
-    profile.style.height = normalisedHeight.toString() + 'px'
-    profile.style.border = 'solid black ' + thickness.toString() + 'px'
-    profile.style.position = 'relative'
-    profile.style.top = (canvasHeight/2).toString() + 'px'
-    profile.style.right = (-canvasWidth/2).toString() + 'px'
-
-    canvas.append(profile)
-  }
-
-  const drawCanvas = () => {
-
+    canvas.appendChild(profile)
   }
 
   return {getCanvas, drawProfile}
