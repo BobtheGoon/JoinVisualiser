@@ -12,7 +12,8 @@ const createForm = () => {
 
 const createCanvas = () => {
   const canvas = CanvasFactory()
-  canvas.drawProfile(200, 200, 15)
+  canvas.drawProfile(100, 100, 15)
+  canvas.drawBolts(30, 1, 175, 175 )
 
   return canvas
 }
