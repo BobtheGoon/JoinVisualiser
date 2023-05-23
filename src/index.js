@@ -2,7 +2,6 @@
 
 import renderSpliceJoint from "./spliceJoint"
 import renderChordEndJoint from "./chordEndJoint"
-import renderWindframeJoint from "./windframeJoint"
 
 const renderHome = (() => { 
   const root = document.getElementById('content')
@@ -23,12 +22,8 @@ const renderHome = (() => {
   renderChordEndJointButton.textContent = 'Render chord end joint'
   renderChordEndJointButton.addEventListener('click', renderChordEndJoint)
 
-  const renderWindframeJointButton = document.createElement('button')
-  renderWindframeJointButton.textContent = 'Render windframe joint'
-  renderWindframeJointButton.addEventListener('click', renderWindframeJoint)
 
   menu.append(header)
   menu.append(renderChordEndJointButton)
-  menu.append(renderWindframeJointButton)
   menu.append(renderSpliceButton)
 })()

@@ -4,15 +4,17 @@ import { CanvasFactory} from "./CanvasFactory"
 
 const createForm = () => {
   const form = FormFactory()
-  form.createInputs('e1', 'e2', 'p1', 'p2', 'boltSize', 'profileHeight', 'profileWidth')
-  form.createLabels(['e1', 'e2', 'p1', 'p2', 'Bolt', 'Profile Height', 'Profile Width'])
+  form.createInputs('e1', 'e2', 'p1', 'p2', 'boltSize', 'boltCount', 'profileHeight', 'profileWidth')
+  form.createLabels(['e1', 'e2', 'p1', 'p2', 'Bolt Size', 'Bolt Count', 'Profile Height', 'Profile Width'])
 
   return form
 }
 
 const createCanvas = () => {
   const canvas = CanvasFactory()
-  canvas.drawConnection(45, 45, 150, 60, 80, 80, 5, 3, 30)
+  // canvas.drawConnection(45, 45, 150, 60, 80, 80, 5, 3, 30)
+  //e1, e2, p1, p2, profile height, profile width, profile thickness, bolt count, bolt size
+  canvas.drawConnection(50, 50, 230, 80, 120, 120, 6, 4, 40)
 
   return canvas
 }

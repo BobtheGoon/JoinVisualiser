@@ -13,12 +13,16 @@ const CanvasFactory = () => {
 
   const getCanvas = () => canvas
 
-  const drawPlate = (e1, e2, p1, p2, boltCount) => {
-    let plateHeight = e1*2 + p1
-    let plateWidth = e2*2 + p2*boltCount
+  const calculatePlateDims = (e1, e2, p1, p2, boltCount) => {
+    const plateHeight = e1*2 + p1
+    const plateWidth = e2*2 + p2*(boltCount-1)
 
-    console.log(plateHeight)
-    console.log(plateWidth)
+    return {plateHeight, plateWidth}
+  }
+
+  //Draw plate
+  const drawPlate = (e1, e2, p1, p2, boltCount) => {
+    const {plateHeight, plateWidth} = calculatePlateDims(e1, e2, p1, p2, boltCount)
 
     const plate = document.createElementNS(svgns, 'rect')
     plate.setAttribute('x', canvasWidth/2 - plateWidth/2)
@@ -27,7 +31,7 @@ const CanvasFactory = () => {
     plate.setAttribute('width', plateWidth)
     plate.setAttribute('fill', '#dddddd')
 
-    return {plate, plateHeight, plateWidth}
+    return plate
   }
 
   const drawProfile = (height, width, thickness) => {
@@ -43,25 +47,32 @@ const CanvasFactory = () => {
     return profile    
   }
   
-  const drawBolts = (e1, e2, p1, p2, boltCount, boltSize, plateHeight, plateWidth) => {
-    const bolt = document.createElementNS(svgns, 'circle')
-    bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2)
-    bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1)
-    bolt.setAttribute('r', boltSize/2)
-    bolt.setAttribute('fill', '#000000')
+  const drawBolts = (e1, e2, p1, p2, boltCount, boltSize) => {
+    const {plateHeight, plateWidth} = calculatePlateDims(e1, e2, p1, p2, boltCount)
+    let bolts = []
+
+    for(let i=0 ; i < boltCount; i++) {
+      const bolt = document.createElementNS(svgns, 'circle')
+      bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
+      bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1)
+      bolt.setAttribute('r', boltSize/2)
+      bolt.setAttribute('fill', '#000000')
+      bolts.push(bolt)
+    }
     
-    return bolt
+    return bolts
   }
   
   const drawConnection = (e1, e2, p1, p2, profileHeight, profileWidth, profileThickness, boltCount, boltSize) => {
-    const {plate, plateHeight, plateWidth} = drawPlate(e1, e2, p1, p2, boltCount)
+    const plate = drawPlate(e1, e2, p1, p2, boltCount)
     canvas.appendChild(plate)
     
     const profile = drawProfile(profileHeight, profileWidth, profileThickness)
     canvas.appendChild(profile)
     
-    const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize, plateHeight, plateWidth)
-    canvas.appendChild(bolts)
+    const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize)
+    console.log(bolts)
+    bolts.forEach((bolt) => canvas.appendChild(bolt))
   }
 
   return {getCanvas, drawConnection}
