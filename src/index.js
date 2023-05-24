@@ -1,4 +1,4 @@
-// import './style.css'
+import './style.css'
 
 import renderSpliceJoint from "./spliceJoint"
 import renderChordEndJoint from "./chordEndJoint"
@@ -21,7 +21,6 @@ const renderHome = (() => {
   const renderChordEndJointButton = document.createElement('button')
   renderChordEndJointButton.textContent = 'Render chord end joint'
   renderChordEndJointButton.addEventListener('click', renderChordEndJoint)
-
 
   menu.append(header)
   menu.append(renderChordEndJointButton)

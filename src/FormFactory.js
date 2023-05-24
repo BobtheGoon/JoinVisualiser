@@ -11,6 +11,7 @@ const FormFactory = () => {
       container.id = input
 
       const inputElement = document.createElement('input')
+      inputElement.name = input
       container.append(inputElement)
       return container
       })
@@ -18,6 +19,14 @@ const FormFactory = () => {
     inputs.forEach(input => {
         form.append(input)
     })
+  }
+
+  const getFormData = () => {
+    return Object.fromEntries(new FormData(form).entries())
+  } 
+
+  const checkInputs = (formData) => {
+
   }
 
   const createLabels = (labels) => {
@@ -33,8 +42,22 @@ const FormFactory = () => {
       index++
     })
   }
-  
-  return {getForm, createInputs, createLabels}
+
+  const createSubmitButton = (submitEvent) => {
+    const button = document.createElement('button')
+    button.textContent = 'Submit'
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const formData = Object.fromEntries(new FormData(form).entries())
+      Object.values(formData).forEach(value => console.log(value))
+      // submitEvent({formData})
+    })
+
+    form.append(button)
+  }
+
+  return {getForm, createInputs, createLabels, createSubmitButton}
 }
 
 export {FormFactory}
