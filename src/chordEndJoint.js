@@ -21,10 +21,10 @@ const createCanvas = () => {
 }
 
 const renderChordEndJoint = () => {
-  // clearContent()
+  clearContent()
 
   const root = document.createElement('div')
-  root.id = 'chord-end-joint'
+  root.id = 'joint-form'
 
   const canvas = createCanvas()
   const form = createForm(canvas.drawConnection)

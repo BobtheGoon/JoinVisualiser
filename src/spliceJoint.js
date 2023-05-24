@@ -1,5 +1,8 @@
+import { clearContent } from "./helper"
+
 const renderSpliceJoint = () => {
-    console.log('splice joint')
+  clearContent()
+  console.log('splice joint')
 }
 
 export default renderSpliceJoint
