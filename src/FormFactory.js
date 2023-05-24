@@ -1,29 +1,29 @@
 const FormFactory = () => {
   const form = document.createElement('form')
+  
+  const getForm = () => form
 
   const addSubmitEvent = (submitEvent) => {
     form.addEventListener('submit', (e) => {
       e.preventDefault()
       const formData = getFormData()
-      console.log(formData)
+      console.log(Object.values(formData))
 
       //Perform input sanitisation and ensure each input field is filled out, after which send values to submitEvent
-
-      submitEvent(formData)
+      // console.log(checkInputs(formData))
+      if (checkInputs(formData)) submitEvent(formData)
     })
   }
 
-  const getForm = () => form
-
   const createInputs = (...args) => {
     //Take in arguments for joint parameters and make them into input fields with the parameter as the inputs id
-
     const inputs = args.map(input => {
       const container = document.createElement('div')
       container.id = input
 
       const inputElement = document.createElement('input')
       inputElement.name = input
+      inputElement.type = 'number'
       container.append(inputElement)
       return container
       })
@@ -39,7 +39,11 @@ const FormFactory = () => {
   } 
 
   const checkInputs = (formData) => {
-
+    let empty = true
+    Object.values(formData).map(value => {
+      if (value === '') empty = false
+    })
+    return empty
   }
 
   const createLabels = (labels) => {

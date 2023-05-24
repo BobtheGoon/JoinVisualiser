@@ -13,49 +13,48 @@ const CanvasFactory = () => {
 
   const getCanvas = () => canvas
 
-  const convertFormDataToInt = (formData) => {
-    return Object.values(formData).map((value) => parseInt(value, 10))
-  }
-
+  
   const calculatePlateDims = (e1, e2, p1, p2, boltCount) => {
     const plateHeight = e1*2 + p1
     const plateWidth = e2*2 + p2*(boltCount-1)
-
+    
     return {plateHeight, plateWidth}
   }
 
   //Draw plate
   const drawPlate = (e1, e2, p1, p2, boltCount) => {
     const {plateHeight, plateWidth} = calculatePlateDims(e1, e2, p1, p2, boltCount)
-    console.log(plateHeight, plateWidth)
-
+    
     const plate = document.createElementNS(svgns, 'rect')
     plate.setAttribute('x', canvasWidth/2 - plateWidth/2)
     plate.setAttribute('y', canvasHeight/2 - plateHeight/2)
     plate.setAttribute('height', plateHeight)
     plate.setAttribute('width', plateWidth)
     plate.setAttribute('fill', '#dddddd')
-
+    
     return plate
   }
-
+  
+  //Draw profile
   const drawProfile = (height, width, thickness) => {
     const profile = document.createElementNS(svgns, 'rect')
     profile.setAttribute('x', canvasWidth/2 - width/2)
     profile.setAttribute('y', canvasHeight/2 - height/2)
-    profile.setAttribute('width', width-thickness)
-    profile.setAttribute('height', height-thickness)
+    profile.setAttribute('width', width - thickness)
+    profile.setAttribute('height', height - thickness)
     profile.setAttribute('stroke', 'black')
     profile.setAttribute('fill', 'transparent')
     profile.setAttribute('stroke-width', thickness)
-
+    
     return profile    
   }
   
+  //Draw bolts
   const drawBolts = (e1, e2, p1, p2, boltCount, boltSize) => {
     const {plateHeight, plateWidth} = calculatePlateDims(e1, e2, p1, p2, boltCount)
     let bolts = []
-
+    
+    //Create top bolt row
     for(let i=0 ; i < boltCount; i++) {
       const bolt = document.createElementNS(svgns, 'circle')
       bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
@@ -64,7 +63,8 @@ const CanvasFactory = () => {
       bolt.setAttribute('fill', '#000000')
       bolts.push(bolt)
     }
-
+    
+    //Create bottom bolt row
     for(let i=0 ; i < boltCount; i++) {
       const bolt = document.createElementNS(svgns, 'circle')
       bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
@@ -77,7 +77,13 @@ const CanvasFactory = () => {
     return bolts
   }
   
+  const convertFormDataToInt = (formData) => {
+    return Object.values(formData).map((value) => parseInt(value, 10))
+  }
+  
+  //Parent function for drawing connection
   const drawConnection = (formData) => {
+    canvas.innerHTML = ''
     const [e1, e2, p1, p2, boltSize, boltCount, profileHeight, profileWidth, profileThickness] = convertFormDataToInt(formData)
     
     const plate = drawPlate(e1, e2, p1, p2, boltCount)
@@ -87,10 +93,9 @@ const CanvasFactory = () => {
     canvas.appendChild(profile)
     
     const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize)
-    console.log(bolts)
     bolts.forEach((bolt) => canvas.appendChild(bolt))
   }
-
+  
   return {getCanvas, drawConnection}
 }
 
