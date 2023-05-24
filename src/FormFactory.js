@@ -1,6 +1,18 @@
 const FormFactory = () => {
   const form = document.createElement('form')
 
+  const addSubmitEvent = (submitEvent) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const formData = getFormData()
+      console.log(formData)
+
+      //Perform input sanitisation and ensure each input field is filled out, after which send values to submitEvent
+
+      submitEvent(formData)
+    })
+  }
+
   const getForm = () => form
 
   const createInputs = (...args) => {
@@ -21,6 +33,7 @@ const FormFactory = () => {
     })
   }
 
+  //Get values from form inputs
   const getFormData = () => {
     return Object.fromEntries(new FormData(form).entries())
   } 
@@ -43,21 +56,14 @@ const FormFactory = () => {
     })
   }
 
-  const createSubmitButton = (submitEvent) => {
+  const createSubmitButton = (buttonText) => {
     const button = document.createElement('button')
-    button.textContent = 'Submit'
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault()
-      const formData = Object.fromEntries(new FormData(form).entries())
-      Object.values(formData).forEach(value => console.log(value))
-      // submitEvent({formData})
-    })
+    button.textContent = buttonText
 
     form.append(button)
   }
 
-  return {getForm, createInputs, createLabels, createSubmitButton}
+  return {addSubmitEvent, getForm, createInputs, createLabels, createSubmitButton}
 }
 
 export {FormFactory}
