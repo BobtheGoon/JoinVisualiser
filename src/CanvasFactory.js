@@ -38,10 +38,15 @@ const CanvasFactory = () => {
   //Draw profile
   const drawProfile = (height, width, thickness) => {
     const profile = document.createElementNS(svgns, 'rect')
+    
+    //Since stroke-width is set inwards, we need to subtract it from height and width so the profile size is displayed correctly
+    height -= thickness
+    width -= thickness
+    
     profile.setAttribute('x', canvasWidth/2 - width/2)
     profile.setAttribute('y', canvasHeight/2 - height/2)
-    profile.setAttribute('width', width - thickness)
-    profile.setAttribute('height', height - thickness)
+    profile.setAttribute('width', width)
+    profile.setAttribute('height', height)
     profile.setAttribute('stroke', 'black')
     profile.setAttribute('fill', 'transparent')
     profile.setAttribute('stroke-width', thickness)
@@ -76,7 +81,7 @@ const CanvasFactory = () => {
     
     return bolts
   }
-  
+
   const convertFormDataToInt = (formData) => {
     return Object.values(formData).map((value) => parseInt(value, 10))
   }

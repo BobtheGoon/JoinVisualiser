@@ -10,7 +10,6 @@ const FormFactory = () => {
       console.log(Object.values(formData))
 
       //Perform input sanitisation and ensure each input field is filled out, after which send values to submitEvent
-      // console.log(checkInputs(formData))
       if (checkInputs(formData)) submitEvent(formData)
     })
   }
