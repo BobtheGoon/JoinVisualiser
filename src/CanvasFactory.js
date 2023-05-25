@@ -1,7 +1,8 @@
 const CanvasFactory = () => {
   //Size of drawing canvas
-  const canvasHeight = 400
-  const canvasWidth = 400
+  const canvasHeight = 500
+  const canvasWidth = 500
+  let scale
 
   //Create an svg canvas
   const svgns = 'http://www.w3.org/2000/svg'
@@ -13,17 +14,27 @@ const CanvasFactory = () => {
 
   const getCanvas = () => canvas
 
+  const scaleJoint = (maxHeight, maxWidth) => {
+    scale = Math.max(maxHeight/canvasHeight, maxWidth/canvasWidth)
+    if (scale > 1) return scale
+    else return 1
+    
+  }
   
   const calculatePlateDims = (e1, e2, p1, p2, boltCount) => {
     const plateHeight = e1*2 + p1
     const plateWidth = e2*2 + p2*(boltCount-1)
     
-    return {plateHeight, plateWidth}
+    console.log(plateHeight, plateWidth)
+    scale = scaleJoint(plateHeight, plateWidth)
+    
+    return {plateHeight, plateWidth, scale}
   }
 
   //Draw plate
-  const drawPlate = (e1, e2, p1, p2, boltCount) => {
-    const {plateHeight, plateWidth} = calculatePlateDims(e1, e2, p1, p2, boltCount)
+  const drawPlate = (plateHeight, plateWidth) => {
+
+    console.log(plateHeight, plateWidth)
     
     const plate = document.createElementNS(svgns, 'rect')
     plate.setAttribute('x', canvasWidth/2 - plateWidth/2)
@@ -42,6 +53,9 @@ const CanvasFactory = () => {
     //Since stroke-width is set inwards, we need to subtract it from height and width so the profile size is displayed correctly
     height -= thickness
     width -= thickness
+
+    height /= scale
+    width /= scale
     
     profile.setAttribute('x', canvasWidth/2 - width/2)
     profile.setAttribute('y', canvasHeight/2 - height/2)
@@ -89,14 +103,20 @@ const CanvasFactory = () => {
   //Parent function for drawing connection
   const drawConnection = (formData) => {
     canvas.innerHTML = ''
-    const [e1, e2, p1, p2, boltSize, boltCount, profileHeight, profileWidth, profileThickness] = convertFormDataToInt(formData)
+    let [e1, e2, p1, p2, boltSize, boltCount, profileHeight, profileWidth, profileThickness] = convertFormDataToInt(formData)
+    let {plateHeight, plateWidth, scale} = calculatePlateDims(e1, e2, p1, p2, boltCount)
     
-    const plate = drawPlate(e1, e2, p1, p2, boltCount)
+    //Scale plate size and draw to canvas
+    plateHeight = plateHeight / scale
+    plateWidth = plateWidth / scale
+    const plate = drawPlate(plateHeight, plateWidth)
     canvas.appendChild(plate)
-    
+
+    //Scale profile and draw to canvas
     const profile = drawProfile(profileHeight, profileWidth, profileThickness)
     canvas.appendChild(profile)
     
+    //Scale bolt size and draw to canvas
     const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize)
     bolts.forEach((bolt) => canvas.appendChild(bolt))
   }
