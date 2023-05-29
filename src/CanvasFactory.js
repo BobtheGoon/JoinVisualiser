@@ -95,7 +95,7 @@ const CanvasFactory = () => {
   //Main function for drawing end plate connection
   const drawEndPlateConnection = (formData) => {
     canvas.innerHTML = ''
-
+    
     //Convert values to int, get max plate size and scale factor
     const dimensions = ConvertFormDataToInt(formData)
     let {plateHeight, plateWidth, scale} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5])
@@ -126,6 +126,7 @@ const CanvasFactory = () => {
 
   const drawSpliceJointConnection = (formData) => {
     console.log('spliceplate')
+    canvas.innerHTML = ''
   }
 
   return {getCanvas, drawEndPlateConnection, drawSpliceJointConnection}
