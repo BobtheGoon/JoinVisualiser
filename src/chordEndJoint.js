@@ -18,7 +18,7 @@ const renderChordEndJoint = () => {
   form.createInputs('e1', 'e2', 'p1', 'p2', 'boltSize', 'boltCount', 'profileHeight', 'profileWidth', 'profileThickness')
   form.createLabels(['e1', 'e2', 'p1', 'p2', 'Bolt Size', 'Bolt Count', 'Profile Height', 'Profile Width', 'Profile Thickness'])
   form.createSubmitButton('Submit')
-  form.addSubmitEvent(canvas.drawConnection)
+  form.addSubmitEvent(canvas.drawEndPlateConnection)
 
   root.append(form.getForm())
   root.append(canvas.getCanvas())
