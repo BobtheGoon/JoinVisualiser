@@ -4,7 +4,7 @@ const svgns = 'http://www.w3.org/2000/svg'
 //Draw plate
 const drawPlate = (plateHeight, plateWidth, canvasHeight, canvasWidth, plateLength = 0) => {  
   const plate = document.createElementNS(svgns, 'rect')
-  plate.setAttribute('x', canvasWidth/2 - plateWidth/2 - plateLength)
+  plate.setAttribute('x', canvasWidth/2 - plateWidth/2)
   plate.setAttribute('y', canvasHeight/2 - plateHeight/2)
   plate.setAttribute('height', plateHeight)
   plate.setAttribute('width', plateWidth + plateLength)
@@ -41,7 +41,7 @@ const drawBolts = (e1, e2, p1, p2, boltCount, boltRows, boltSize, plateHeight, p
     for(let j=0 ; j < boltCount; ++j) {
       const bolt = document.createElementNS(svgns, 'circle')
       bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*j)
-      bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1 + i*p1)
+      bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1 + p1*i)
       bolt.setAttribute('r', boltSize/2)
       bolt.setAttribute('fill', '#000000')
 

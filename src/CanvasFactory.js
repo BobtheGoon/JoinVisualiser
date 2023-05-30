@@ -23,7 +23,7 @@ const CanvasFactory = () => {
     return Object.values(formData).map((value) => parseInt(value, 10))
   }
 
-  const calculateEndPlateScale = (maxHeight, maxWidth) => {
+  const calculateScale = (maxHeight, maxWidth) => {
     const scale = Math.max(maxHeight/canvasHeight, maxWidth/canvasWidth)*1.2 //Add 20% padding to canvas
     if (scale > 1) return scale
     else return 1
@@ -44,7 +44,7 @@ const CanvasFactory = () => {
     //Convert values to int, get max plate size and scale factor
     const dimensions = ConvertFormDataToInt(formData)
     let {plateHeight, plateWidth} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5], 2)
-    const scale = calculateEndPlateScale(plateHeight, plateWidth)
+    const scale = calculateScale(plateHeight, plateWidth)
 
 
     //Prevent boltCount from being scaled
@@ -76,16 +76,14 @@ const CanvasFactory = () => {
     const dimensions = ConvertFormDataToInt(formData)
     let {plateHeight, plateWidth} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5], dimensions[6])
     
-    const scale = calculateEndPlateScale(plateHeight, plateWidth+dimensions[8])
+    const scale = calculateScale(plateHeight, plateWidth+dimensions[8])
     
     //Prevent boltCount and boltRows from being scaled
     const [boltCount, boltRows] = dimensions.splice(5, 2)
     const [e1, e2, p1, p2, boltSize, profileHeight, plateLength] = dimensions.map(dim => dim /= scale)
     
-    console.log(plateHeight, plateWidth, scale)
     plateHeight /= scale
-    plateWidth = (plateWidth + plateLength) / scale
-    console.log(plateHeight, plateWidth)
+    plateWidth /= scale
 
     //Draw plate to canvas
     const plate = drawPlate(plateHeight, plateWidth, canvasHeight, canvasWidth, plateLength)
