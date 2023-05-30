@@ -1,16 +1,18 @@
+import { drawPlate, drawProfile, drawBolts } from "./endPlateSvg"
+
 const CanvasFactory = () => {
+  //SVG namespace
+  const svgns = 'http://www.w3.org/2000/svg'
   //Size of drawing canvas
   const canvasHeight = 500
   const canvasWidth = 500
-  
   //Create svg canvas
-  const svgns = 'http://www.w3.org/2000/svg'
   const canvas = document.createElementNS(svgns, 'svg')
   canvas.id = 'canvas'
   canvas.setAttribute('width', canvasWidth)
   canvas.setAttribute('height', canvasHeight)
   canvas.setAttribute('viewBox', `0 0 ${canvasWidth} ${canvasHeight}`)
-  
+
   const getCanvas = () => canvas
   
   const ConvertFormDataToInt = (formData) => {
@@ -33,65 +35,6 @@ const CanvasFactory = () => {
     return {plateHeight, plateWidth, scale}
   }
 
-  //Draw plate
-  const drawPlate = (plateHeight, plateWidth) => {    
-    const plate = document.createElementNS(svgns, 'rect')
-    plate.setAttribute('x', canvasWidth/2 - plateWidth/2)
-    plate.setAttribute('y', canvasHeight/2 - plateHeight/2)
-    plate.setAttribute('height', plateHeight)
-    plate.setAttribute('width', plateWidth)
-    plate.setAttribute('fill', '#dddddd')
-    
-    return plate
-  }
-  
-  //Draw profile
-  const drawProfile = (height, width, thickness) => {
-    const profile = document.createElementNS(svgns, 'rect')
-    
-    //Since stroke-width is set inwards, we need to subtract it from height and width so the profile size is displayed correctly
-    height -= thickness
-    width -= thickness
-    
-    profile.setAttribute('x', canvasWidth/2 - width/2)
-    profile.setAttribute('y', canvasHeight/2 - height/2)
-    profile.setAttribute('width', width)
-    profile.setAttribute('height', height)
-    profile.setAttribute('stroke', 'black')
-    profile.setAttribute('fill', 'transparent')
-    profile.setAttribute('stroke-width', thickness)
-    
-    return profile    
-  }
-  
-  //Draw bolts
-  const drawBolts = (e1, e2, p1, p2, boltCount, boltSize) => {
-    const {plateHeight, plateWidth} = calculatePlateDims(e1, e2, p1, p2, boltCount)
-    let bolts = []
-    
-    //Create top bolt row
-    for(let i=0 ; i < boltCount; i++) {
-      const bolt = document.createElementNS(svgns, 'circle')
-      bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
-      bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1)
-      bolt.setAttribute('r', boltSize/2)
-      bolt.setAttribute('fill', '#000000')
-      bolts.push(bolt)
-    }
-    
-    //Create bottom bolt row
-    for(let i=0 ; i < boltCount; i++) {
-      const bolt = document.createElementNS(svgns, 'circle')
-      bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
-      bolt.setAttribute('cy', canvasHeight/2 + plateHeight/2 - e1)
-      bolt.setAttribute('r', boltSize/2)
-      bolt.setAttribute('fill', '#000000')
-      bolts.push(bolt)
-    }
-    
-    return bolts
-  }
-
   //Main function for drawing end plate connection
   const drawEndPlateConnection = (formData) => {
     canvas.innerHTML = ''
@@ -112,15 +55,15 @@ const CanvasFactory = () => {
     console.log(scaled_dims)
     
     //Draw plate to canvas
-    const plate = drawPlate(plateHeight, plateWidth)
+    const plate = drawPlate(plateHeight, plateWidth, canvasHeight, canvasWidth)
     canvas.appendChild(plate)
 
     //Scale profile and draw to canvas
-    const profile = drawProfile(profileHeight, profileWidth, profileThickness)
+    const profile = drawProfile(profileHeight, profileWidth, profileThickness, canvasHeight, canvasWidth)
     canvas.appendChild(profile)
     
     //Scale bolt size and draw to canvas
-    const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize)
+    const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize, plateHeight, plateWidth, canvasHeight, canvasWidth)
     bolts.forEach((bolt) => canvas.appendChild(bolt))
   }
 
