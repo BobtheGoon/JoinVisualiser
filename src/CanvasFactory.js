@@ -16,7 +16,6 @@ const CanvasFactory = () => {
   const getCanvas = () => canvas
   
   const ConvertFormDataToInt = (formData) => {
-    //[e1, e2, p1, p2, boltSize, boltCount, profileHeight, profileWidth, profileThickness]
     return Object.values(formData).map((value) => parseInt(value, 10))
   }
 
@@ -43,6 +42,7 @@ const CanvasFactory = () => {
     const dimensions = ConvertFormDataToInt(formData)
     let {plateHeight, plateWidth, scale} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5])
     const [boltCount] = dimensions.splice(5, 1)
+    const boltRows = 2
     console.log(boltCount)
 
     //Scale dimensions
@@ -63,7 +63,7 @@ const CanvasFactory = () => {
     canvas.appendChild(profile)
     
     //Scale bolt size and draw to canvas
-    const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltSize, plateHeight, plateWidth, canvasHeight, canvasWidth)
+    const bolts = drawBolts(e1, e2, p1, p2, boltCount, boltRows, boltSize, plateHeight, plateWidth, canvasHeight, canvasWidth)
     bolts.forEach((bolt) => canvas.appendChild(bolt))
   }
 

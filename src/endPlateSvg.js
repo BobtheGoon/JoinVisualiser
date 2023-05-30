@@ -1,14 +1,5 @@
+//SVG namespace
 const svgns = 'http://www.w3.org/2000/svg'
-
-const createCanvas = (height, width) => {
-  const canvas = document.createElementNS(svgns, 'svg')
-  canvas.id = 'canvas'
-  canvas.setAttribute('width', width)
-  canvas.setAttribute('height', height)
-  canvas.setAttribute('viewBox', `0 0 ${width} ${height}`)
-
-  return canvas
-}
 
 //Draw plate
 const drawPlate = (plateHeight, plateWidth, canvasHeight, canvasWidth) => {    
@@ -42,30 +33,21 @@ const drawProfile = (height, width, thickness, canvasHeight, canvasWidth) => {
 }
 
 //Draw bolts
-const drawBolts = (e1, e2, p1, p2, boltCount, boltSize, plateHeight, plateWidth, canvasHeight, canvasWidth) => {
+const drawBolts = (e1, e2, p1, p2, boltCount, boltRows, boltSize, plateHeight, plateWidth, canvasHeight, canvasWidth) => {
   let bolts = []
   
-  //Create top bolt row
-  for(let i=0 ; i < boltCount; i++) {
-    const bolt = document.createElementNS(svgns, 'circle')
-    bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
-    bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1)
-    bolt.setAttribute('r', boltSize/2)
-    bolt.setAttribute('fill', '#000000')
-    bolts.push(bolt)
+  for(let i=0 ; i < boltRows; i++) {
+    for(let j=0 ; j < boltCount; j++) {
+      const bolt = document.createElementNS(svgns, 'circle')
+      bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*j)
+      bolt.setAttribute('cy', canvasHeight/2 - plateHeight/2 + e1 + i*p1)
+      bolt.setAttribute('r', boltSize/2)
+      bolt.setAttribute('fill', '#000000')
+
+      bolts.push(bolt)
+    }
   }
-  
-  //Create bottom bolt row
-  for(let i=0 ; i < boltCount; i++) {
-    const bolt = document.createElementNS(svgns, 'circle')
-    bolt.setAttribute('cx', canvasWidth/2 - plateWidth/2 + e2 + p2*i)
-    bolt.setAttribute('cy', canvasHeight/2 + plateHeight/2 - e1)
-    bolt.setAttribute('r', boltSize/2)
-    bolt.setAttribute('fill', '#000000')
-    bolts.push(bolt)
-  }
-  
   return bolts
 }
 
-export {createCanvas, drawPlate, drawProfile, drawBolts}
+export {drawPlate, drawProfile, drawBolts}
