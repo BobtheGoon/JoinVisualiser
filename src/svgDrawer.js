@@ -34,6 +34,7 @@ const drawProfile = (height, width, thickness, canvasHeight, canvasWidth) => {
 
 //Draw bolts
 const drawBolts = (e1, e2, p1, p2, boltCount, boltRows, boltSize, plateHeight, plateWidth, canvasHeight, canvasWidth) => {
+  //Returns an array of bolts with positions set according to params
   let bolts = []
   
   for(let i=0 ; i < boltRows; i++) {
