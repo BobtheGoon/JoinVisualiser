@@ -13,8 +13,8 @@ const renderSpliceJoint = () => {
 
   //Create the form with the correct inputs for end joint
   const form = FormFactory()
-  form.createInputs('e1', 'e2', 'p1', 'p2', 'boltSize', 'boltCount', 'boltRows', 'profileHeight')
-  form.createLabels(['e1', 'e2', 'p1', 'p2', 'Bolt Size', 'Bolt Count', 'Bolt Rows', 'Profile Height'])
+  form.createInputs('e1', 'e2', 'p1', 'p2', 'boltSize', 'boltCount', 'boltRows', 'profileHeight', 'plateLenghtInProfile')
+  form.createLabels(['e1', 'e2', 'p1', 'p2', 'Bolt Size', 'Bolt Count', 'Bolt Rows', 'Profile Height', 'Plate Length Inside Profile '])
   form.createSubmitButton('Submit')
   form.addSubmitEvent(canvas.drawSpliceJointConnection)
 

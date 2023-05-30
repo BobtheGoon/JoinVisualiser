@@ -1,12 +1,12 @@
 /*  TODO:
       -Take e1 dimensions from edge of hole instead of center
 */
-
 import { drawPlate, drawProfile, drawBolts } from "./svgDrawer"
 
+//SVG namespace
+const svgns = 'http://www.w3.org/2000/svg'
+
 const CanvasFactory = () => {
-  //SVG namespace
-  const svgns = 'http://www.w3.org/2000/svg'
   //Size of drawing canvas
   const canvasHeight = 500
   const canvasWidth = 500
@@ -30,12 +30,11 @@ const CanvasFactory = () => {
   }
   
   const calculatePlateDims = (e1, e2, p1, p2, boltCount, boltRows) => {
-    const plateHeight = e1*2 + p1*boltRows
+    const plateHeight = e1*2 + p1*(boltRows-1)
     const plateWidth = e2*2 + p2*(boltCount-1)
     
-    const scale = calculateEndPlateScale(plateHeight, plateWidth)
     
-    return {plateHeight, plateWidth, scale}
+    return {plateHeight, plateWidth}
   }
 
   //Main function for drawing end plate connection
@@ -44,8 +43,10 @@ const CanvasFactory = () => {
     
     //Convert values to int, get max plate size and scale factor
     const dimensions = ConvertFormDataToInt(formData)
-    let {plateHeight, plateWidth, scale} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5], 1)
-    
+    let {plateHeight, plateWidth} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5], 2)
+    const scale = calculateEndPlateScale(plateHeight, plateWidth)
+
+
     //Prevent boltCount from being scaled
     const [boltCount] = dimensions.splice(5, 1)
     const boltRows = 2
@@ -73,17 +74,21 @@ const CanvasFactory = () => {
     canvas.innerHTML = ''
 
     const dimensions = ConvertFormDataToInt(formData)
-    let {plateHeight, plateWidth, scale} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5], dimensions[6])
+    let {plateHeight, plateWidth} = calculatePlateDims(dimensions[0], dimensions[1], dimensions[2], dimensions[3], dimensions[5], dimensions[6])
+    
+    const scale = calculateEndPlateScale(plateHeight, plateWidth+dimensions[8])
     
     //Prevent boltCount and boltRows from being scaled
     const [boltCount, boltRows] = dimensions.splice(5, 2)
-
-    const [e1, e2, p1, p2, boltSize, profileHeight] = dimensions.map(dim => dim /= scale)
+    const [e1, e2, p1, p2, boltSize, profileHeight, plateLength] = dimensions.map(dim => dim /= scale)
+    
+    console.log(plateHeight, plateWidth, scale)
     plateHeight /= scale
-    plateWidth /= scale
+    plateWidth = (plateWidth + plateLength) / scale
+    console.log(plateHeight, plateWidth)
 
     //Draw plate to canvas
-    const plate = drawPlate(plateHeight, plateWidth, canvasHeight, canvasWidth)
+    const plate = drawPlate(plateHeight, plateWidth, canvasHeight, canvasWidth, plateLength)
     canvas.appendChild(plate)
 
     //Scale bolt size and draw to canvas
